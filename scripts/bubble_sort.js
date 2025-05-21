@@ -1,30 +1,24 @@
-function Bubble()
-{
-    c_delay=0;
+async function bubbleSort() {
+  let bars = document.querySelectorAll(".array-bar");
 
-    for(var i=0;i<array_size-1;i++)
-    {
-        for(var j=0;j<array_size-i-1;j++)
-        {
-            div_update(divs[j],div_sizes[j],"yellow");//Color update
+  for (let i = 0; i < bars.length - 1; i++) {
+    for (let j = 0; j < bars.length - i - 1; j++) {
+      bars[j].style.backgroundColor = "red";
+      bars[j + 1].style.backgroundColor = "red";
 
-            if(div_sizes[j]>div_sizes[j+1])
-            {
-                div_update(divs[j],div_sizes[j], "red");//Color update
-                div_update(divs[j+1],div_sizes[j+1], "red");//Color update
+      await sleep(speed);
 
-                var temp=div_sizes[j];
-                div_sizes[j]=div_sizes[j+1];
-                div_sizes[j+1]=temp;
+      let height1 = parseInt(bars[j].style.height);
+      let height2 = parseInt(bars[j + 1].style.height);
 
-                div_update(divs[j],div_sizes[j], "red");//Height update
-                div_update(divs[j+1],div_sizes[j+1], "red");//Height update
-            }
-            div_update(divs[j],div_sizes[j], "blue");//Color updat
-        }
-        div_update(divs[j],div_sizes[j], "green");//Color update
+      if (height1 > height2) {
+        swap(bars[j], bars[j + 1]);
+      }
+
+      bars[j].style.backgroundColor = "white";
+      bars[j + 1].style.backgroundColor = "white";
     }
-    div_update(divs[0],div_sizes[0], "green");//Color update
-
-    enable_buttons();
+    bars[bars.length - i - 1].style.backgroundColor = "green";
+  }
+  bars[0].style.backgroundColor = "green";
 }

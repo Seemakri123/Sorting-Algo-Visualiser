@@ -1,60 +1,47 @@
+async function mergeSort(start = 0, end = array.length - 1) {
+  if (start >= end) return;
 
-function Merge()
-{
-    c_delay=0;
-
-    merge_partition(0,array_size-1);
-
-    enable_buttons();
+  let mid = Math.floor((start + end) / 2);
+  await mergeSort(start, mid);
+  await mergeSort(mid + 1, end);
+  await merge(start, mid, end);
 }
 
-function merge_sort(start,mid,end)
-{
-    var p=start,q=mid+1;
+async function merge(start, mid, end) {
+  let bars = document.querySelectorAll(".array-bar");
+  let left = array.slice(start, mid + 1);
+  let right = array.slice(mid + 1, end + 1);
 
-    var Arr=[],k=0;
+  let i = 0, j = 0, k = start;
 
-    for(var i=start; i<=end; i++)
-    {
-        if(p>mid)
-        {
-            Arr[k++]=div_sizes[q++];
-            div_update(divs[q-1],div_sizes[q-1],"red");//Color update
-        }
-        else if(q>end)
-        {
-            Arr[k++]=div_sizes[p++];
-            div_update(divs[p-1],div_sizes[p-1],"red");//Color update
-        }
-        else if(div_sizes[p]<div_sizes[q])
-        {
-            Arr[k++]=div_sizes[p++];
-            div_update(divs[p-1],div_sizes[p-1],"red");//Color update
-        }
-        else
-        {
-            Arr[k++]=div_sizes[q++];
-            div_update(divs[q-1],div_sizes[q-1],"red");//Color update
-        }
+  while (i < left.length && j < right.length) {
+    if (left[i] <= right[j]) {
+      array[k] = left[i];
+      bars[k].style.height = `${left[i] * 3}px`;
+      i++;
+    } else {
+      array[k] = right[j];
+      bars[k].style.height = `${right[j] * 3}px`;
+      j++;
     }
+    bars[k].style.backgroundColor = "green";
+    await sleep(speed);
+    k++;
+  }
 
-    for(var t=0;t<k;t++)
-    {
-        div_sizes[start++]=Arr[t];
-        div_update(divs[start-1],div_sizes[start-1],"green");//Color update
-    }
-}
+  while (i < left.length) {
+    array[k] = left[i];
+    bars[k].style.height = `${left[i] * 3}px`;
+    bars[k].style.backgroundColor = "green";
+    await sleep(speed);
+    i++; k++;
+  }
 
-function merge_partition(start,end)
-{
-    if(start < end)
-    {
-        var mid=Math.floor((start + end) / 2);
-        div_update(divs[mid],div_sizes[mid],"yellow");//Color update
-
-        merge_partition(start,mid);
-        merge_partition(mid+1,end);
-
-        merge_sort(start,mid,end);
-    }
+  while (j < right.length) {
+    array[k] = right[j];
+    bars[k].style.height = `${right[j] * 3}px`;
+    bars[k].style.backgroundColor = "green";
+    await sleep(speed);
+    j++; k++;
+  }
 }
